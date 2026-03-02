@@ -24,25 +24,9 @@ Item {
             anchors.rightMargin: Theme.spacingXL
             spacing: Theme.spacingL
 
-            Column {
-                spacing: Theme.spacingXS
-
-                Text {
-                    text: "Memory"
-                    font.family: Theme.fontFamily
-                    font.pixelSize: Theme.fontSizeXXL
-                    font.weight: Theme.fontWeightSemiBold
-                    color: Theme.textPrimary
-                }
-
-                Text {
-                    text: Monitor.memTotal.toFixed(1) + " GB Total Installed"
-                    font.family: Theme.fontFamily
-                    font.pixelSize: Theme.fontSizeM
-                    font.weight: Theme.fontWeightRegular
-                    color: Theme.textSecondary
-                }
-
+            PageHeader {
+                title: "Memory"
+                subtitle: Monitor.memTotal.toFixed(1) + " GB Total Installed"
             }
 
             Rectangle {
@@ -51,61 +35,38 @@ Item {
                 color: Theme.border
             }
 
-            Rectangle {
+            DashboardCard {
                 width: parent.width
                 height: 300
-                color: Theme.surfaceAlt
-                border.color: Theme.border
-                border.width: 1
-                radius: Theme.radiusLarge
-                clip: true
-                layer.enabled: true
+                title: "MEMORY USAGE"
 
-                Column {
-                    anchors.top: parent.top
-                    anchors.left: parent.left
-                    anchors.margins: Theme.spacingM
+                Row {
                     spacing: 4
                     z: 2
 
                     Text {
-                        text: "MEMORY USAGE"
+                        id: memUsageText
+
+                        text: Monitor.memUsed.toFixed(1)
                         font.family: Theme.fontFamily
-                        font.pixelSize: Theme.fontSizeXS
-                        font.weight: Theme.fontWeightMedium
-                        font.letterSpacing: 0.6
-                        color: Theme.textSecondary
+                        font.pixelSize: Theme.fontSizeXXL
+                        font.weight: Theme.fontWeightSemiBold
+                        color: Theme.textPrimary
                     }
 
-                    Row {
-                        spacing: 4
-
-                        Text {
-                            id: memUsageText
-
-                            text: Monitor.memUsed.toFixed(1)
-                            font.family: Theme.fontFamily
-                            font.pixelSize: Theme.fontSizeXXL
-                            font.weight: Theme.fontWeightSemiBold
-                            color: Theme.textPrimary
-                        }
-
-                        Text {
-                            text: "GB (" + Monitor.memUsagePercent.toFixed(0) + "%)"
-                            anchors.baseline: memUsageText.baseline
-                            font.family: Theme.fontFamily
-                            font.pixelSize: Theme.fontSizeM
-                            font.weight: Theme.fontWeightRegular
-                            color: Theme.textSecondary
-                        }
-
+                    Text {
+                        text: "GB (" + Monitor.memUsagePercent.toFixed(0) + "%)"
+                        anchors.baseline: memUsageText.baseline
+                        font.family: Theme.fontFamily
+                        font.pixelSize: Theme.fontSizeM
+                        font.weight: Theme.fontWeightRegular
+                        color: Theme.textSecondary
                     }
 
                 }
 
                 LineGraph {
                     anchors.fill: parent
-                    anchors.margins: Theme.spacingM
                     dataPoints: Monitor.memHistory
                     maxValue: 100
                     lineColor: Theme.memory
@@ -114,61 +75,38 @@ Item {
 
             }
 
-            Rectangle {
+            DashboardCard {
                 width: parent.width
                 height: 200
-                color: Theme.surfaceAlt
-                border.color: Theme.border
-                border.width: 1
-                radius: Theme.radiusLarge
-                clip: true
-                layer.enabled: true
+                title: "SWAP USAGE"
 
-                Column {
-                    anchors.top: parent.top
-                    anchors.left: parent.left
-                    anchors.margins: Theme.spacingM
+                Row {
                     spacing: 4
                     z: 2
 
                     Text {
-                        text: "SWAP USAGE"
+                        id: swapUsageText
+
+                        text: Monitor.swapUsed.toFixed(1)
                         font.family: Theme.fontFamily
-                        font.pixelSize: Theme.fontSizeXS
-                        font.weight: Theme.fontWeightMedium
-                        font.letterSpacing: 0.6
-                        color: Theme.textSecondary
+                        font.pixelSize: Theme.fontSizeXXL
+                        font.weight: Theme.fontWeightSemiBold
+                        color: Theme.textPrimary
                     }
 
-                    Row {
-                        spacing: 4
-
-                        Text {
-                            id: swapUsageText
-
-                            text: Monitor.swapUsed.toFixed(1)
-                            font.family: Theme.fontFamily
-                            font.pixelSize: Theme.fontSizeXXL
-                            font.weight: Theme.fontWeightSemiBold
-                            color: Theme.textPrimary
-                        }
-
-                        Text {
-                            text: "GB"
-                            anchors.baseline: swapUsageText.baseline
-                            font.family: Theme.fontFamily
-                            font.pixelSize: Theme.fontSizeM
-                            font.weight: Theme.fontWeightRegular
-                            color: Theme.textSecondary
-                        }
-
+                    Text {
+                        text: "GB"
+                        anchors.baseline: swapUsageText.baseline
+                        font.family: Theme.fontFamily
+                        font.pixelSize: Theme.fontSizeM
+                        font.weight: Theme.fontWeightRegular
+                        color: Theme.textSecondary
                     }
 
                 }
 
                 LineGraph {
                     anchors.fill: parent
-                    anchors.margins: Theme.spacingM
                     dataPoints: Monitor.swapHistory
                     maxValue: 100
                     lineColor: Theme.disk
@@ -177,19 +115,14 @@ Item {
 
             }
 
-            Column {
+            DashboardCard {
                 width: parent.width
-                spacing: Theme.spacingM
-
-                Text {
-                    text: "Details"
-                    font.family: Theme.fontFamily
-                    font.pixelSize: Theme.fontSizeL
-                    font.weight: Theme.fontWeightSemiBold
-                    color: Theme.textPrimary
-                }
+                height: detailsFlow.height + Theme.spacingXL + 30
+                title: "DETAILS"
 
                 Flow {
+                    id: detailsFlow
+
                     width: parent.width
                     spacing: Theme.spacingXL
 

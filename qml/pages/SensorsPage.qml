@@ -24,25 +24,9 @@ Item {
             anchors.rightMargin: Theme.spacingXL
             spacing: Theme.spacingL
 
-            Column {
-                spacing: Theme.spacingXS
-
-                Text {
-                    text: "Sensors"
-                    font.family: Theme.fontFamily
-                    font.pixelSize: Theme.fontSizeXXL
-                    font.weight: Theme.fontWeightSemiBold
-                    color: Theme.textPrimary
-                }
-
-                Text {
-                    text: Monitor.sensors.length + " thermal zones detected"
-                    font.family: Theme.fontFamily
-                    font.pixelSize: Theme.fontSizeM
-                    font.weight: Theme.fontWeightRegular
-                    color: Theme.textSecondary
-                }
-
+            PageHeader {
+                title: "Sensors"
+                subtitle: Monitor.sensors.length + " thermal zones detected"
             }
 
             Rectangle {

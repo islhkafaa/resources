@@ -28,46 +28,38 @@ Item {
             anchors.rightMargin: Theme.spacingXL
             spacing: Theme.spacingL
 
-            Column {
-                spacing: Theme.spacingXS
+            PageHeader {
+                title: "Network"
+                subtitle: Monitor.networks.length + " Interfaces Detected"
+            }
 
-                Text {
-                    text: "Network"
-                    font.family: Theme.fontFamily
-                    font.pixelSize: Theme.fontSizeXXL
-                    font.weight: Theme.fontWeightSemiBold
-                    color: Theme.textPrimary
-                }
+            Row {
+                spacing: Theme.spacingM
 
-                Row {
-                    spacing: Theme.spacingM
+                Repeater {
+                    model: Monitor.networks
 
-                    Repeater {
-                        model: Monitor.networks
+                    Rectangle {
+                        width: 100
+                        height: 32
+                        radius: Theme.radiusSmall
+                        color: root.currentNetIndex === index ? Theme.net : Theme.surfaceAlt
+                        border.color: root.currentNetIndex === index ? Qt.lighter(Theme.net, 1.2) : Theme.border
+                        border.width: 1
 
-                        Rectangle {
-                            width: 100
-                            height: 32
-                            radius: Theme.radiusSmall
-                            color: root.currentNetIndex === index ? Theme.net : Theme.surfaceAlt
-                            border.color: root.currentNetIndex === index ? Qt.lighter(Theme.net, 1.2) : Theme.border
-                            border.width: 1
+                        Text {
+                            anchors.centerIn: parent
+                            text: modelData.iface
+                            font.family: Theme.fontFamily
+                            font.pixelSize: Theme.fontSizeS
+                            font.weight: Theme.fontWeightMedium
+                            color: root.currentNetIndex === index ? "#ffffff" : Theme.textSecondary
+                        }
 
-                            Text {
-                                anchors.centerIn: parent
-                                text: modelData.iface
-                                font.family: Theme.fontFamily
-                                font.pixelSize: Theme.fontSizeS
-                                font.weight: Theme.fontWeightMedium
-                                color: root.currentNetIndex === index ? "#ffffff" : Theme.textSecondary
-                            }
-
-                            MouseArea {
-                                anchors.fill: parent
-                                onClicked: root.currentNetIndex = index
-                                cursorShape: Qt.PointingHandCursor
-                            }
-
+                        MouseArea {
+                            anchors.fill: parent
+                            onClicked: root.currentNetIndex = index
+                            cursorShape: Qt.PointingHandCursor
                         }
 
                     }
@@ -82,61 +74,38 @@ Item {
                 color: Theme.border
             }
 
-            Rectangle {
+            DashboardCard {
                 width: parent.width
                 height: 250
-                color: Theme.surfaceAlt
-                border.color: Theme.border
-                border.width: 1
-                radius: Theme.radiusLarge
-                clip: true
-                layer.enabled: true
+                title: "RECEIVE (RX)"
 
-                Column {
-                    anchors.top: parent.top
-                    anchors.left: parent.left
-                    anchors.margins: Theme.spacingM
+                Row {
                     spacing: 4
                     z: 2
 
                     Text {
-                        text: "RECEIVE (RX)"
+                        id: rxText
+
+                        text: root.currentNet ? ((root.currentNet.rxBytesPerSec * 8) / 1e+06).toFixed(1) : "0.0"
                         font.family: Theme.fontFamily
-                        font.pixelSize: Theme.fontSizeXS
-                        font.weight: Theme.fontWeightMedium
-                        font.letterSpacing: 0.6
-                        color: Theme.textSecondary
+                        font.pixelSize: Theme.fontSizeXXL
+                        font.weight: Theme.fontWeightSemiBold
+                        color: Theme.textPrimary
                     }
 
-                    Row {
-                        spacing: 4
-
-                        Text {
-                            id: rxText
-
-                            text: root.currentNet ? ((root.currentNet.rxBytesPerSec * 8) / 1e+06).toFixed(1) : "0.0"
-                            font.family: Theme.fontFamily
-                            font.pixelSize: Theme.fontSizeXXL
-                            font.weight: Theme.fontWeightSemiBold
-                            color: Theme.textPrimary
-                        }
-
-                        Text {
-                            text: "Mbps"
-                            anchors.baseline: rxText.baseline
-                            font.family: Theme.fontFamily
-                            font.pixelSize: Theme.fontSizeM
-                            font.weight: Theme.fontWeightRegular
-                            color: Theme.textSecondary
-                        }
-
+                    Text {
+                        text: "Mbps"
+                        anchors.baseline: rxText.baseline
+                        font.family: Theme.fontFamily
+                        font.pixelSize: Theme.fontSizeM
+                        font.weight: Theme.fontWeightRegular
+                        color: Theme.textSecondary
                     }
 
                 }
 
                 LineGraph {
                     anchors.fill: parent
-                    anchors.margins: Theme.spacingM
                     dataPoints: root.currentNet ? root.currentNet.rxHistory : []
                     autoScale: true
                     lineColor: Theme.net
@@ -145,61 +114,38 @@ Item {
 
             }
 
-            Rectangle {
+            DashboardCard {
                 width: parent.width
                 height: 250
-                color: Theme.surfaceAlt
-                border.color: Theme.border
-                border.width: 1
-                radius: Theme.radiusLarge
-                clip: true
-                layer.enabled: true
+                title: "TRANSMIT (TX)"
 
-                Column {
-                    anchors.top: parent.top
-                    anchors.left: parent.left
-                    anchors.margins: Theme.spacingM
+                Row {
                     spacing: 4
                     z: 2
 
                     Text {
-                        text: "TRANSMIT (TX)"
+                        id: txText
+
+                        text: root.currentNet ? ((root.currentNet.txBytesPerSec * 8) / 1e+06).toFixed(1) : "0.0"
                         font.family: Theme.fontFamily
-                        font.pixelSize: Theme.fontSizeXS
-                        font.weight: Theme.fontWeightMedium
-                        font.letterSpacing: 0.6
-                        color: Theme.textSecondary
+                        font.pixelSize: Theme.fontSizeXXL
+                        font.weight: Theme.fontWeightSemiBold
+                        color: Theme.textPrimary
                     }
 
-                    Row {
-                        spacing: 4
-
-                        Text {
-                            id: txText
-
-                            text: root.currentNet ? ((root.currentNet.txBytesPerSec * 8) / 1e+06).toFixed(1) : "0.0"
-                            font.family: Theme.fontFamily
-                            font.pixelSize: Theme.fontSizeXXL
-                            font.weight: Theme.fontWeightSemiBold
-                            color: Theme.textPrimary
-                        }
-
-                        Text {
-                            text: "Mbps"
-                            anchors.baseline: txText.baseline
-                            font.family: Theme.fontFamily
-                            font.pixelSize: Theme.fontSizeM
-                            font.weight: Theme.fontWeightRegular
-                            color: Theme.textSecondary
-                        }
-
+                    Text {
+                        text: "Mbps"
+                        anchors.baseline: txText.baseline
+                        font.family: Theme.fontFamily
+                        font.pixelSize: Theme.fontSizeM
+                        font.weight: Theme.fontWeightRegular
+                        color: Theme.textSecondary
                     }
 
                 }
 
                 LineGraph {
                     anchors.fill: parent
-                    anchors.margins: Theme.spacingM
                     dataPoints: root.currentNet ? root.currentNet.txHistory : []
                     autoScale: true
                     lineColor: Theme.accent

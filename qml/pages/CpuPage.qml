@@ -24,25 +24,9 @@ Item {
             anchors.rightMargin: Theme.spacingXL
             spacing: Theme.spacingL
 
-            Column {
-                spacing: Theme.spacingXS
-
-                Text {
-                    text: "Processor"
-                    font.family: Theme.fontFamily
-                    font.pixelSize: Theme.fontSizeXXL
-                    font.weight: Theme.fontWeightSemiBold
-                    color: Theme.textPrimary
-                }
-
-                Text {
-                    text: Monitor.cpuModel || "Unknown Processor"
-                    font.family: Theme.fontFamily
-                    font.pixelSize: Theme.fontSizeM
-                    font.weight: Theme.fontWeightRegular
-                    color: Theme.textSecondary
-                }
-
+            PageHeader {
+                title: "Processor"
+                subtitle: Monitor.cpuModel || "Unknown Processor"
             }
 
             Rectangle {
@@ -51,61 +35,38 @@ Item {
                 color: Theme.border
             }
 
-            Rectangle {
+            DashboardCard {
                 width: parent.width
                 height: 300
-                color: Theme.surfaceAlt
-                border.color: Theme.border
-                border.width: 1
-                radius: Theme.radiusLarge
-                clip: true
-                layer.enabled: true
+                title: "OVERALL UTILIZATION"
 
-                Column {
-                    anchors.top: parent.top
-                    anchors.left: parent.left
-                    anchors.margins: Theme.spacingM
+                Row {
                     spacing: 4
                     z: 2
 
                     Text {
-                        text: "OVERALL UTILIZATION"
+                        id: usageText
+
+                        text: Monitor.cpuUsage.toFixed(1)
                         font.family: Theme.fontFamily
-                        font.pixelSize: Theme.fontSizeXS
-                        font.weight: Theme.fontWeightMedium
-                        font.letterSpacing: 0.6
-                        color: Theme.textSecondary
+                        font.pixelSize: Theme.fontSizeXXL
+                        font.weight: Theme.fontWeightSemiBold
+                        color: Theme.textPrimary
                     }
 
-                    Row {
-                        spacing: 4
-
-                        Text {
-                            id: usageText
-
-                            text: Monitor.cpuUsage.toFixed(1)
-                            font.family: Theme.fontFamily
-                            font.pixelSize: Theme.fontSizeXXL
-                            font.weight: Theme.fontWeightSemiBold
-                            color: Theme.textPrimary
-                        }
-
-                        Text {
-                            text: "%"
-                            anchors.baseline: usageText.baseline
-                            font.family: Theme.fontFamily
-                            font.pixelSize: Theme.fontSizeM
-                            font.weight: Theme.fontWeightRegular
-                            color: Theme.textSecondary
-                        }
-
+                    Text {
+                        text: "%"
+                        anchors.baseline: usageText.baseline
+                        font.family: Theme.fontFamily
+                        font.pixelSize: Theme.fontSizeM
+                        font.weight: Theme.fontWeightRegular
+                        color: Theme.textSecondary
                     }
 
                 }
 
                 LineGraph {
                     anchors.fill: parent
-                    anchors.margins: Theme.spacingM
                     dataPoints: Monitor.cpuHistory
                     maxValue: 100
                     lineColor: Theme.cpu
@@ -114,19 +75,14 @@ Item {
 
             }
 
-            Column {
+            DashboardCard {
                 width: parent.width
-                spacing: Theme.spacingM
-
-                Text {
-                    text: "Logical Processors (" + Monitor.cpuCores + ")"
-                    font.family: Theme.fontFamily
-                    font.pixelSize: Theme.fontSizeL
-                    font.weight: Theme.fontWeightSemiBold
-                    color: Theme.textPrimary
-                }
+                height: coreFlow.height + Theme.spacingXL + 30
+                title: "LOGICAL PROCESSORS (" + Monitor.cpuCores + ")"
 
                 Flow {
+                    id: coreFlow
+
                     width: parent.width
                     spacing: Theme.spacingM
 

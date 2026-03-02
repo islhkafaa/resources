@@ -1,30 +1,39 @@
+import "../components"
 import QtQuick
 import QtQuick.Layouts
 import Resources
-import "../components"
 
 Item {
     id: root
-    anchors.fill: parent
 
     function formatBytes(bytes) {
-        if (bytes < 1024)             return bytes.toFixed(1) + " B/s"
-        if (bytes < 1024 * 1024)      return (bytes / 1024).toFixed(1) + " KB/s"
-        if (bytes < 1024 * 1024 * 1024) return (bytes / (1024 * 1024)).toFixed(1) + " MB/s"
-        return (bytes / (1024 * 1024 * 1024)).toFixed(2) + " GB/s"
+        if (bytes < 1024)
+            return bytes.toFixed(1) + " B/s";
+
+        if (bytes < 1024 * 1024)
+            return (bytes / 1024).toFixed(1) + " KB/s";
+
+        if (bytes < 1024 * 1024 * 1024)
+            return (bytes / (1024 * 1024)).toFixed(1) + " MB/s";
+
+        return (bytes / (1024 * 1024 * 1024)).toFixed(2) + " GB/s";
     }
 
     function primaryDisk() {
-        return Monitor.disks.length > 0 ? Monitor.disks[0] : null
+        return Monitor.disks.length > 0 ? Monitor.disks[0] : null;
     }
 
     function primaryNet() {
         for (let i = 0; i < Monitor.networks.length; ++i) {
-            let n = Monitor.networks[i]
-            if (n.rxBytesPerSec > 0 || n.txBytesPerSec > 0) return n
+            let n = Monitor.networks[i];
+            if (n.rxBytesPerSec > 0 || n.txBytesPerSec > 0)
+                return n;
+
         }
-        return Monitor.networks.length > 0 ? Monitor.networks[0] : null
+        return Monitor.networks.length > 0 ? Monitor.networks[0] : null;
     }
+
+    anchors.fill: parent
 
     Flickable {
         anchors.fill: parent
@@ -33,6 +42,7 @@ Item {
 
         Column {
             id: contentColumn
+
             anchors.left: parent.left
             anchors.right: parent.right
             anchors.top: parent.top
@@ -41,24 +51,9 @@ Item {
             anchors.rightMargin: Theme.spacingXL
             spacing: Theme.spacingL
 
-            Column {
-                spacing: Theme.spacingXS
-
-                Text {
-                    text: "Overview"
-                    font.family: Theme.fontFamily
-                    font.pixelSize: Theme.fontSizeXXL
-                    font.weight: Theme.fontWeightSemiBold
-                    color: Theme.textPrimary
-                }
-
-                Text {
-                    text: Monitor.cpuModel || "System at a glance"
-                    font.family: Theme.fontFamily
-                    font.pixelSize: Theme.fontSizeM
-                    font.weight: Theme.fontWeightRegular
-                    color: Theme.textSecondary
-                }
+            PageHeader {
+                title: "Overview"
+                subtitle: Monitor.cpuModel || "System at a glance"
             }
 
             Rectangle {
@@ -76,7 +71,7 @@ Item {
                     value: Monitor.cpuUsage.toFixed(1)
                     unit: "%"
                     accentColor: Theme.cpu
-                    percentage: Monitor.cpuUsage / 100.0
+                    percentage: Monitor.cpuUsage / 100
                 }
 
                 MetricCard {
@@ -84,31 +79,36 @@ Item {
                     value: Monitor.memUsed.toFixed(1)
                     unit: "GB"
                     accentColor: Theme.memory
-                    percentage: Monitor.memUsagePercent / 100.0
+                    percentage: Monitor.memUsagePercent / 100
                     subtitle: Monitor.memTotal.toFixed(1) + " GB total"
                 }
 
                 MetricCard {
                     id: diskCard
-                    title: "Disk"
+
                     property var d: primaryDisk()
+
+                    title: "Disk"
                     value: d ? formatBytes(d.readBytesPerSec + d.writeBytesPerSec) : "--"
                     unit: ""
                     accentColor: Theme.disk
-                    percentage: d ? d.usagePercent / 100.0 : 0.0
+                    percentage: d ? d.usagePercent / 100 : 0
                     subtitle: d ? d.device : ""
                 }
 
                 MetricCard {
                     id: netCard
-                    title: "Network"
+
                     property var n: primaryNet()
+
+                    title: "Network"
                     value: n ? formatBytes(n.rxBytesPerSec + n.txBytesPerSec) : "--"
                     unit: ""
                     accentColor: Theme.net
-                    percentage: 0.0
+                    percentage: 0
                     subtitle: n ? n.iface : ""
                 }
+
             }
 
             Column {
@@ -139,6 +139,7 @@ Item {
                         Column {
                             anchors.verticalCenter: parent.verticalCenter
                             spacing: 4
+
                             Text {
                                 text: Monitor.memUsed.toFixed(2) + " / " + Monitor.memTotal.toFixed(2) + " GB"
                                 font.family: Theme.fontFamily
@@ -146,17 +147,20 @@ Item {
                                 font.weight: Theme.fontWeightMedium
                                 color: Theme.textPrimary
                             }
+
                             Text {
                                 text: "Physical memory"
                                 font.family: Theme.fontFamily
                                 font.pixelSize: Theme.fontSizeS
                                 color: Theme.textSecondary
                             }
+
                         }
 
                         Column {
                             anchors.verticalCenter: parent.verticalCenter
                             spacing: 4
+
                             Text {
                                 text: Monitor.swapUsed.toFixed(2) + " / " + Monitor.swapTotal.toFixed(2) + " GB"
                                 font.family: Theme.fontFamily
@@ -164,16 +168,24 @@ Item {
                                 font.weight: Theme.fontWeightMedium
                                 color: Theme.textPrimary
                             }
+
                             Text {
                                 text: "Swap"
                                 font.family: Theme.fontFamily
                                 font.pixelSize: Theme.fontSizeS
                                 color: Theme.textSecondary
                             }
+
                         }
+
                     }
+
                 }
+
             }
+
         }
+
     }
+
 }
