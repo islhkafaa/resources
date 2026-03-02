@@ -40,6 +40,7 @@ qt_add_qml_module(resources
         qml/pages/CpuPage.qml
         qml/pages/MemoryPage.qml
         qml/pages/DiskPage.qml
+        qml/pages/NetworkPage.qml
         qml/components/MetricCard.qml
         qml/components/LineGraph.qml
         qml/components/CoreBar.qml

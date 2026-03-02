@@ -91,10 +91,31 @@ void SystemMonitor::poll() {
     QList<NetInfo> nets = m_netReader.read();
     m_networks.clear();
     for (const NetInfo &n : nets) {
+      double rxMbps = (n.rxBytesPerSec * 8.0) / 1000000.0;
+      double txMbps = (n.txBytesPerSec * 8.0) / 1000000.0;
+
+      m_netRxHistory[n.iface].append(rxMbps);
+      if (m_netRxHistory[n.iface].size() > 60)
+        m_netRxHistory[n.iface].pop_front();
+
+      m_netTxHistory[n.iface].append(txMbps);
+      if (m_netTxHistory[n.iface].size() > 60)
+        m_netTxHistory[n.iface].pop_front();
+
       QVariantMap map;
       map["iface"] = n.iface;
-      map["rxBytesPerSec"] = n.rxBytesPerSec;
-      map["txBytesPerSec"] = n.txBytesPerSec;
+      map["rxBytesPerSec"] = QVariant::fromValue(n.rxBytesPerSec);
+      map["txBytesPerSec"] = QVariant::fromValue(n.txBytesPerSec);
+
+      QVariantList rxHist, txHist;
+      for (double v : m_netRxHistory[n.iface])
+        rxHist.append(v);
+      for (double v : m_netTxHistory[n.iface])
+        txHist.append(v);
+
+      map["rxHistory"] = rxHist;
+      map["txHistory"] = txHist;
+
       m_networks.append(map);
     }
     emit netChanged();

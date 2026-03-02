@@ -25,7 +25,7 @@ Rectangle {
         "color": Theme.disk
     }, {
         "label": "Network",
-        "page": "",
+        "page": "pages/NetworkPage.qml",
         "color": Theme.net
     }, {
         "label": "GPU",
