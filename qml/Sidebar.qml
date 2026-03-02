@@ -28,12 +28,8 @@ Rectangle {
         "page": "pages/NetworkPage.qml",
         "color": Theme.net
     }, {
-        "label": "GPU",
-        "page": "",
-        "color": Theme.gpu
-    }, {
         "label": "Sensors",
-        "page": "",
+        "page": "pages/SensorsPage.qml",
         "color": Theme.accent
     }]
 

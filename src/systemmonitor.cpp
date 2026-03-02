@@ -120,4 +120,16 @@ void SystemMonitor::poll() {
     }
     emit netChanged();
   }
+
+  {
+    QList<SensorInfo> sensorsRaw = m_sensorsReader.read();
+    m_sensors.clear();
+    for (const SensorInfo &s : sensorsRaw) {
+      QVariantMap map;
+      map["name"] = s.name;
+      map["temperature"] = s.temperature;
+      m_sensors.append(map);
+    }
+    emit sensorsChanged();
+  }
 }

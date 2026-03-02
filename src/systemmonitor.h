@@ -10,6 +10,7 @@
 #include "linux/diskreader.h"
 #include "linux/memreader.h"
 #include "linux/netreader.h"
+#include "linux/sensorsreader.h"
 
 class SystemMonitor : public QObject {
   Q_OBJECT
@@ -34,6 +35,7 @@ class SystemMonitor : public QObject {
 
   Q_PROPERTY(QVariantList disks READ disks NOTIFY diskChanged)
   Q_PROPERTY(QVariantList networks READ networks NOTIFY netChanged)
+  Q_PROPERTY(QVariantList sensors READ sensors NOTIFY sensorsChanged)
 
 public:
   explicit SystemMonitor(QObject *parent = nullptr);
@@ -57,6 +59,7 @@ public:
 
   QVariantList disks() const { return m_disks; }
   QVariantList networks() const { return m_networks; }
+  QVariantList sensors() const { return m_sensors; }
 
 signals:
   void cpuChanged();
@@ -66,6 +69,7 @@ signals:
   void swapHistoryChanged();
   void diskChanged();
   void netChanged();
+  void sensorsChanged();
 
 private slots:
   void poll();
@@ -76,6 +80,7 @@ private:
   MemReader m_memReader;
   DiskReader m_diskReader;
   NetReader m_netReader;
+  SensorsReader m_sensorsReader;
 
   double m_cpuUsage = 0.0;
   QString m_cpuModel;
@@ -103,4 +108,5 @@ private:
   QMap<QString, QList<double>> m_netTxHistory;
 
   QVariantList m_networks;
+  QVariantList m_sensors;
 };

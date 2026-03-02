@@ -22,6 +22,7 @@ qt_add_executable(resources
     src/linux/memreader.cpp
     src/linux/diskreader.cpp
     src/linux/netreader.cpp
+    src/linux/sensorsreader.cpp
 )
 
 target_include_directories(resources PRIVATE src)
@@ -41,6 +42,7 @@ qt_add_qml_module(resources
         qml/pages/MemoryPage.qml
         qml/pages/DiskPage.qml
         qml/pages/NetworkPage.qml
+        qml/pages/SensorsPage.qml
         qml/components/MetricCard.qml
         qml/components/LineGraph.qml
         qml/components/CoreBar.qml

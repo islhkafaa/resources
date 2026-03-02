@@ -62,3 +62,8 @@ struct NetInfo {
   double rxBytesPerSec = 0.0;
   double txBytesPerSec = 0.0;
 };
+
+struct SensorInfo {
+  QString name;
+  double temperature = 0.0;
+};
