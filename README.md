@@ -2,7 +2,7 @@
 
 A high-performance, modern system monitor built with C++20 and Qt 6.
 
-![Preview](/mnt/disk-2/Media/Projects/C++/resources/preview.png)
+![Preview](preview.png)
 
 ## Features
 
