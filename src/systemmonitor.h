@@ -28,6 +28,10 @@ class SystemMonitor : public QObject {
   Q_PROPERTY(double swapUsed READ swapUsed NOTIFY memChanged)
   Q_PROPERTY(double swapUsagePercent READ swapUsagePercent NOTIFY memChanged)
 
+  Q_PROPERTY(QList<double> memHistory READ memHistory NOTIFY memHistoryChanged)
+  Q_PROPERTY(
+      QList<double> swapHistory READ swapHistory NOTIFY swapHistoryChanged)
+
   Q_PROPERTY(QVariantList disks READ disks NOTIFY diskChanged)
   Q_PROPERTY(QVariantList networks READ networks NOTIFY netChanged)
 
@@ -48,6 +52,9 @@ public:
   double swapUsed() const { return m_swapUsed; }
   double swapUsagePercent() const { return m_swapUsagePercent; }
 
+  QList<double> memHistory() const { return m_memHistory; }
+  QList<double> swapHistory() const { return m_swapHistory; }
+
   QVariantList disks() const { return m_disks; }
   QVariantList networks() const { return m_networks; }
 
@@ -55,6 +62,8 @@ signals:
   void cpuChanged();
   void cpuHistoryChanged();
   void memChanged();
+  void memHistoryChanged();
+  void swapHistoryChanged();
   void diskChanged();
   void netChanged();
 
@@ -81,6 +90,9 @@ private:
   double m_swapTotal = 0.0;
   double m_swapUsed = 0.0;
   double m_swapUsagePercent = 0.0;
+
+  QList<double> m_memHistory;
+  QList<double> m_swapHistory;
 
   QVariantList m_disks;
   QVariantList m_networks;

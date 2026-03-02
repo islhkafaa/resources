@@ -38,7 +38,18 @@ void SystemMonitor::poll() {
     m_swapUsagePercent = (info.swapTotalKb > 0)
                              ? (100.0 * info.swapUsedKb / info.swapTotalKb)
                              : 0.0;
+
+    m_memHistory.append(m_memUsagePercent);
+    if (m_memHistory.size() > 60)
+      m_memHistory.pop_front();
+
+    m_swapHistory.append(m_swapUsagePercent);
+    if (m_swapHistory.size() > 60)
+      m_swapHistory.pop_front();
+
     emit memChanged();
+    emit memHistoryChanged();
+    emit swapHistoryChanged();
   }
 
   {

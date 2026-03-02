@@ -1,10 +1,11 @@
+import "../components"
 import QtQuick
 import QtQuick.Layouts
 import Resources
-import "../components"
 
 Item {
     id: root
+
     anchors.fill: parent
 
     Flickable {
@@ -14,6 +15,7 @@ Item {
 
         Column {
             id: contentColumn
+
             anchors.left: parent.left
             anchors.right: parent.right
             anchors.top: parent.top
@@ -40,6 +42,7 @@ Item {
                     font.weight: Theme.fontWeightRegular
                     color: Theme.textSecondary
                 }
+
             }
 
             Rectangle {
@@ -56,6 +59,7 @@ Item {
                 border.width: 1
                 radius: Theme.radiusLarge
                 clip: true
+                layer.enabled: true
 
                 Column {
                     anchors.top: parent.top
@@ -78,12 +82,14 @@ Item {
 
                         Text {
                             id: usageText
+
                             text: Monitor.cpuUsage.toFixed(1)
                             font.family: Theme.fontFamily
                             font.pixelSize: Theme.fontSizeXXL
                             font.weight: Theme.fontWeightSemiBold
                             color: Theme.textPrimary
                         }
+
                         Text {
                             text: "%"
                             anchors.baseline: usageText.baseline
@@ -92,16 +98,20 @@ Item {
                             font.weight: Theme.fontWeightRegular
                             color: Theme.textSecondary
                         }
+
                     }
+
                 }
 
                 LineGraph {
                     anchors.fill: parent
+                    anchors.margins: Theme.spacingM
                     dataPoints: Monitor.cpuHistory
-                    maxValue: 100.0
+                    maxValue: 100
                     lineColor: Theme.cpu
                     lineWidth: 3
                 }
+
             }
 
             Column {
@@ -122,14 +132,21 @@ Item {
 
                     Repeater {
                         model: Monitor.perCoreUsage
+
                         CoreBar {
                             label: "Core " + index
-                            percentage: modelData / 100.0
+                            percentage: modelData / 100
                             color: Theme.cpu
                         }
+
                     }
+
                 }
+
             }
+
         }
+
     }
+
 }

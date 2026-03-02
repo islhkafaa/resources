@@ -14,7 +14,7 @@ Rectangle {
     readonly property var navItems: [
         { label: "Overview",  page: "pages/OverviewPage.qml",  color: Theme.accent  },
         { label: "CPU",       page: "pages/CpuPage.qml",                            color: Theme.cpu     },
-        { label: "Memory",    page: "",                                             color: Theme.memory  },
+        { label: "Memory",    page: "pages/MemoryPage.qml",                         color: Theme.memory  },
         { label: "Disk",      page: "",                                             color: Theme.disk    },
         { label: "Network",   page: "",                                             color: Theme.net     },
         { label: "GPU",       page: "",                                             color: Theme.gpu     },
