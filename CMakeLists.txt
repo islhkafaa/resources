@@ -12,10 +12,19 @@ set(CMAKE_AUTORCC ON)
 find_package(Qt6 6.4 REQUIRED COMPONENTS Core Quick QuickControls2 Svg)
 
 qt_standard_project_setup(REQUIRES 6.4)
+qt_policy(SET QTP0001 NEW)
+qt_policy(SET QTP0004 NEW)
 
 qt_add_executable(resources
     src/main.cpp
+    src/systemmonitor.cpp
+    src/linux/cpureader.cpp
+    src/linux/memreader.cpp
+    src/linux/diskreader.cpp
+    src/linux/netreader.cpp
 )
+
+target_include_directories(resources PRIVATE src)
 
 set_source_files_properties(qml/Theme.qml PROPERTIES QT_QML_SINGLETON_TYPE TRUE)
 

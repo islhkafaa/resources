@@ -16,15 +16,15 @@ ApplicationWindow {
 
     FontLoader {
         id: fontRegular
-        source: "assets/fonts/Inter-Regular.ttf"
+        source: "../assets/fonts/Inter-Regular.ttf"
     }
     FontLoader {
         id: fontMedium
-        source: "assets/fonts/Inter-Medium.ttf"
+        source: "../assets/fonts/Inter-Medium.ttf"
     }
     FontLoader {
         id: fontSemiBold
-        source: "assets/fonts/Inter-SemiBold.ttf"
+        source: "../assets/fonts/Inter-SemiBold.ttf"
     }
 
     Rectangle {

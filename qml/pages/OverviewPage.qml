@@ -7,6 +7,25 @@ Item {
     id: root
     anchors.fill: parent
 
+    function formatBytes(bytes) {
+        if (bytes < 1024)             return bytes.toFixed(1) + " B/s"
+        if (bytes < 1024 * 1024)      return (bytes / 1024).toFixed(1) + " KB/s"
+        if (bytes < 1024 * 1024 * 1024) return (bytes / (1024 * 1024)).toFixed(1) + " MB/s"
+        return (bytes / (1024 * 1024 * 1024)).toFixed(2) + " GB/s"
+    }
+
+    function primaryDisk() {
+        return Monitor.disks.length > 0 ? Monitor.disks[0] : null
+    }
+
+    function primaryNet() {
+        for (let i = 0; i < Monitor.networks.length; ++i) {
+            let n = Monitor.networks[i]
+            if (n.rxBytesPerSec > 0 || n.txBytesPerSec > 0) return n
+        }
+        return Monitor.networks.length > 0 ? Monitor.networks[0] : null
+    }
+
     Flickable {
         anchors.fill: parent
         contentHeight: contentColumn.height + Theme.spacingXL * 2
@@ -34,7 +53,7 @@ Item {
                 }
 
                 Text {
-                    text: "System at a glance"
+                    text: Monitor.cpuModel || "System at a glance"
                     font.family: Theme.fontFamily
                     font.pixelSize: Theme.fontSizeM
                     font.weight: Theme.fontWeightRegular
@@ -54,34 +73,41 @@ Item {
 
                 MetricCard {
                     title: "CPU"
-                    value: "--"
+                    value: Monitor.cpuUsage.toFixed(1)
                     unit: "%"
                     accentColor: Theme.cpu
-                    percentage: 0.0
+                    percentage: Monitor.cpuUsage / 100.0
                 }
 
                 MetricCard {
                     title: "Memory"
-                    value: "--"
+                    value: Monitor.memUsed.toFixed(1)
                     unit: "GB"
                     accentColor: Theme.memory
-                    percentage: 0.0
+                    percentage: Monitor.memUsagePercent / 100.0
+                    subtitle: Monitor.memTotal.toFixed(1) + " GB total"
                 }
 
                 MetricCard {
+                    id: diskCard
                     title: "Disk"
-                    value: "--"
-                    unit: "MB/s"
+                    property var d: primaryDisk()
+                    value: d ? formatBytes(d.readBytesPerSec + d.writeBytesPerSec) : "--"
+                    unit: ""
                     accentColor: Theme.disk
-                    percentage: 0.0
+                    percentage: d ? d.usagePercent / 100.0 : 0.0
+                    subtitle: d ? d.device : ""
                 }
 
                 MetricCard {
+                    id: netCard
                     title: "Network"
-                    value: "--"
-                    unit: "Mb/s"
+                    property var n: primaryNet()
+                    value: n ? formatBytes(n.rxBytesPerSec + n.txBytesPerSec) : "--"
+                    unit: ""
                     accentColor: Theme.net
                     percentage: 0.0
+                    subtitle: n ? n.iface : ""
                 }
             }
 
@@ -90,7 +116,7 @@ Item {
                 spacing: Theme.spacingS
 
                 Text {
-                    text: "Hardware"
+                    text: "Memory"
                     font.family: Theme.fontFamily
                     font.pixelSize: Theme.fontSizeL
                     font.weight: Theme.fontWeightSemiBold
@@ -99,18 +125,52 @@ Item {
 
                 Rectangle {
                     width: parent.width
-                    height: 100
+                    height: 72
                     radius: Theme.radiusMedium
                     color: Theme.surfaceAlt
                     border.color: Theme.border
                     border.width: 1
 
-                    Text {
-                        anchors.centerIn: parent
-                        text: "Hardware info will appear here in Phase 2"
-                        font.family: Theme.fontFamily
-                        font.pixelSize: Theme.fontSizeM
-                        color: Theme.textDisabled
+                    Row {
+                        anchors.fill: parent
+                        anchors.margins: Theme.spacingM
+                        spacing: Theme.spacingXL
+
+                        Column {
+                            anchors.verticalCenter: parent.verticalCenter
+                            spacing: 4
+                            Text {
+                                text: Monitor.memUsed.toFixed(2) + " / " + Monitor.memTotal.toFixed(2) + " GB"
+                                font.family: Theme.fontFamily
+                                font.pixelSize: Theme.fontSizeM
+                                font.weight: Theme.fontWeightMedium
+                                color: Theme.textPrimary
+                            }
+                            Text {
+                                text: "Physical memory"
+                                font.family: Theme.fontFamily
+                                font.pixelSize: Theme.fontSizeS
+                                color: Theme.textSecondary
+                            }
+                        }
+
+                        Column {
+                            anchors.verticalCenter: parent.verticalCenter
+                            spacing: 4
+                            Text {
+                                text: Monitor.swapUsed.toFixed(2) + " / " + Monitor.swapTotal.toFixed(2) + " GB"
+                                font.family: Theme.fontFamily
+                                font.pixelSize: Theme.fontSizeM
+                                font.weight: Theme.fontWeightMedium
+                                color: Theme.textPrimary
+                            }
+                            Text {
+                                text: "Swap"
+                                font.family: Theme.fontFamily
+                                font.pixelSize: Theme.fontSizeS
+                                color: Theme.textSecondary
+                            }
+                        }
                     }
                 }
             }

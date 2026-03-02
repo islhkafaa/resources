@@ -1,6 +1,9 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
+#include <QQmlContext>
 #include <QQuickStyle>
+
+#include "systemmonitor.h"
 
 int main(int argc, char *argv[]) {
   QGuiApplication app(argc, argv);
@@ -11,7 +14,10 @@ int main(int argc, char *argv[]) {
 
   QQuickStyle::setStyle("Basic");
 
+  SystemMonitor monitor;
+
   QQmlApplicationEngine engine;
+  engine.rootContext()->setContextProperty("Monitor", &monitor);
 
   QObject::connect(
       &engine, &QQmlApplicationEngine::objectCreationFailed, &app,

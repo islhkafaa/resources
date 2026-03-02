@@ -8,6 +8,7 @@ Item {
     property string title: ""
     property string value: "--"
     property string unit: ""
+    property string subtitle: ""
     property color accentColor: Theme.accent
     property real percentage: 0.0
 
@@ -49,11 +50,12 @@ Item {
             }
 
             Row {
+                id: valueRow
                 anchors.left: parent.left
                 spacing: 4
-                baseline: children[0].baseline
 
                 Text {
+                    id: valueText
                     text: root.value
                     font.family: Theme.fontFamily
                     font.pixelSize: Theme.fontSizeXXL
@@ -63,11 +65,11 @@ Item {
 
                 Text {
                     text: root.unit
+                    anchors.baseline: valueText.baseline
                     font.family: Theme.fontFamily
                     font.pixelSize: Theme.fontSizeM
                     font.weight: Theme.fontWeightRegular
                     color: Theme.textSecondary
-                    topPadding: 12
                 }
             }
         }
