@@ -4,9 +4,18 @@ static constexpr double kKbToGb = 1.0 / (1024.0 * 1024.0);
 
 SystemMonitor::SystemMonitor(QObject *parent) : QObject(parent) {
   connect(&m_timer, &QTimer::timeout, this, &SystemMonitor::poll);
-  m_timer.setInterval(1000);
+  m_timer.setInterval(m_updateInterval);
   poll();
   m_timer.start();
+}
+
+void SystemMonitor::setUpdateInterval(int interval) {
+  if (m_updateInterval == interval)
+    return;
+
+  m_updateInterval = interval;
+  m_timer.setInterval(m_updateInterval);
+  emit updateIntervalChanged();
 }
 
 void SystemMonitor::poll() {

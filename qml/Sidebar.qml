@@ -31,6 +31,10 @@ Rectangle {
         "label": "Sensors",
         "page": "pages/SensorsPage.qml",
         "color": Theme.accent
+    }, {
+        "label": "Settings",
+        "page": "pages/SettingsPage.qml",
+        "color": Theme.textSecondary
     }]
 
     signal pageSelected(string page)
@@ -46,11 +50,11 @@ Rectangle {
         }
 
         Repeater {
-            model: root.navItems
+            model: root.navItems.length - 1
 
             SidebarItem {
                 required property int index
-                required property var modelData
+                property var modelData: root.navItems[index]
 
                 width: parent.width
                 label: modelData.label
@@ -66,6 +70,26 @@ Rectangle {
 
         }
 
+    }
+
+    SidebarItem {
+        id: settingsItem
+
+        property int index: root.navItems.length - 1
+        property var modelData: root.navItems[index]
+
+        anchors.bottom: parent.bottom
+        anchors.bottomMargin: Theme.spacingL
+        width: parent.width
+        label: modelData.label
+        accentColor: modelData.color
+        selected: root.currentIndex === index
+        onClicked: {
+            root.currentIndex = index;
+            if (modelData.page !== "")
+                root.pageSelected(modelData.page);
+
+        }
     }
 
 }

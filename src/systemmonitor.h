@@ -37,6 +37,9 @@ class SystemMonitor : public QObject {
   Q_PROPERTY(QVariantList networks READ networks NOTIFY netChanged)
   Q_PROPERTY(QVariantList sensors READ sensors NOTIFY sensorsChanged)
 
+  Q_PROPERTY(int updateInterval READ updateInterval WRITE setUpdateInterval
+                 NOTIFY updateIntervalChanged)
+
 public:
   explicit SystemMonitor(QObject *parent = nullptr);
 
@@ -61,6 +64,9 @@ public:
   QVariantList networks() const { return m_networks; }
   QVariantList sensors() const { return m_sensors; }
 
+  int updateInterval() const { return m_updateInterval; }
+  void setUpdateInterval(int interval);
+
 signals:
   void cpuChanged();
   void cpuHistoryChanged();
@@ -70,6 +76,7 @@ signals:
   void diskChanged();
   void netChanged();
   void sensorsChanged();
+  void updateIntervalChanged();
 
 private slots:
   void poll();
@@ -81,6 +88,8 @@ private:
   DiskReader m_diskReader;
   NetReader m_netReader;
   SensorsReader m_sensorsReader;
+
+  int m_updateInterval = 1000;
 
   double m_cpuUsage = 0.0;
   QString m_cpuModel;
