@@ -94,6 +94,9 @@ private:
   QList<double> m_memHistory;
   QList<double> m_swapHistory;
 
+  QMap<QString, QList<double>> m_diskReadHistory;
+  QMap<QString, QList<double>> m_diskWriteHistory;
+
   QVariantList m_disks;
   QVariantList m_networks;
 };

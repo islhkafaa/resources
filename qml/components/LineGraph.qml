@@ -6,6 +6,7 @@ Item {
 
     property var dataPoints: []
     property real maxValue: 100
+    property bool autoScale: false
     property color lineColor: Theme.accent
     property color fillColor: Qt.rgba(lineColor.r, lineColor.g, lineColor.b, 0.2)
     property int lineWidth: 2
@@ -34,13 +35,23 @@ Item {
             if (count < 2)
                 return ;
 
+            var activeMax = root.maxValue;
+            if (root.autoScale) {
+                var localMax = 0;
+                for (var j = 0; j < count; ++j) {
+                    if (effectivePoints[j] > localMax)
+                        localMax = effectivePoints[j];
+
+                }
+                activeMax = Math.max(localMax * 1.1, 1);
+            }
             var drawWidth = width - 4;
             var drawHeight = height - 4;
             var stepX = drawWidth / 59;
             ctx.beginPath();
             var offsetX = 2 + (drawWidth - ((count - 1) * stepX));
             var getTargetY = function getTargetY(val) {
-                var ratio = val / root.maxValue;
+                var ratio = activeMax > 0 ? val / activeMax : 0;
                 ratio = Math.max(0, Math.min(1, ratio));
                 return 2 + (drawHeight - (ratio * drawHeight));
             };

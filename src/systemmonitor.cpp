@@ -56,11 +56,32 @@ void SystemMonitor::poll() {
     QList<DiskInfo> disks = m_diskReader.read();
     m_disks.clear();
     for (const DiskInfo &d : disks) {
+      double rMB = d.readBytesPerSec / (1024.0 * 1024.0);
+      double wMB = d.writeBytesPerSec / (1024.0 * 1024.0);
+
+      m_diskReadHistory[d.device].append(rMB);
+      if (m_diskReadHistory[d.device].size() > 60)
+        m_diskReadHistory[d.device].pop_front();
+
+      m_diskWriteHistory[d.device].append(wMB);
+      if (m_diskWriteHistory[d.device].size() > 60)
+        m_diskWriteHistory[d.device].pop_front();
+
       QVariantMap map;
       map["device"] = d.device;
-      map["readBytesPerSec"] = d.readBytesPerSec;
-      map["writeBytesPerSec"] = d.writeBytesPerSec;
+      map["readBytesPerSec"] = QVariant::fromValue(d.readBytesPerSec);
+      map["writeBytesPerSec"] = QVariant::fromValue(d.writeBytesPerSec);
       map["usagePercent"] = d.usagePercent;
+
+      QVariantList rHist, wHist;
+      for (double v : m_diskReadHistory[d.device])
+        rHist.append(v);
+      for (double v : m_diskWriteHistory[d.device])
+        wHist.append(v);
+
+      map["readHistory"] = rHist;
+      map["writeHistory"] = wHist;
+
       m_disks.append(map);
     }
     emit diskChanged();
