@@ -2,6 +2,10 @@
 
 A high-performance, modern system monitor built with C++20 and Qt 6.
 
+[![Latest Version](https://img.shields.io/badge/version-0.0.5-blue.svg)](CHANGELOG.md)
+[![Changelog](https://img.shields.io/badge/changelog-view-orange.svg)](CHANGELOG.md)
+[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+
 ![Preview](preview.png)
 
 ## Features
