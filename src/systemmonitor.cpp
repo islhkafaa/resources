@@ -141,4 +141,20 @@ void SystemMonitor::poll() {
     }
     emit sensorsChanged();
   }
+
+  {
+    QList<ProcessInfo> procs = m_processReader.read();
+    QVariantList newProcs;
+    for (const auto &p : procs) {
+      QVariantMap map;
+      map["pid"] = p.pid;
+      map["name"] = p.name;
+      map["user"] = p.user;
+      map["cpuUsage"] = p.cpuUsage;
+      map["memUsageMb"] = p.memUsageMb;
+      newProcs.append(map);
+    }
+    m_processes = newProcs;
+    emit processesChanged();
+  }
 }

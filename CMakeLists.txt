@@ -23,6 +23,7 @@ qt_add_executable(resources
     src/linux/diskreader.cpp
     src/linux/netreader.cpp
     src/linux/sensorsreader.cpp
+    src/linux/processreader.cpp
 )
 
 target_include_directories(resources PRIVATE src)
@@ -43,6 +44,7 @@ qt_add_qml_module(resources
         qml/pages/DiskPage.qml
         qml/pages/NetworkPage.qml
         qml/pages/SensorsPage.qml
+        qml/pages/ProcessesPage.qml
         qml/pages/SettingsPage.qml
         qml/components/PageHeader.qml
         qml/components/DashboardCard.qml

@@ -28,6 +28,10 @@ Rectangle {
         "page": "pages/NetworkPage.qml",
         "color": Theme.net
     }, {
+        "label": "Processes",
+        "page": "pages/ProcessesPage.qml",
+        "color": Theme.cpu
+    }, {
         "label": "Sensors",
         "page": "pages/SensorsPage.qml",
         "color": Theme.accent
