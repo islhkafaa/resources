@@ -62,17 +62,17 @@ ApplicationWindow {
             Item { Layout.fillWidth: true }
 
             Text {
-                text: Qt.formatDateTime(new Date(), "ddd, MMM d  hh:mm")
+                text: Qt.formatDateTime(new Date(), "ddd, MMM d  HH:mm:ss")
                 font.family: Theme.fontFamily
                 font.pixelSize: Theme.fontSizeS
                 font.weight: Theme.fontWeightRegular
                 color: Theme.textSecondary
 
                 Timer {
-                    interval: 30000
+                    interval: 1000
                     running: true
                     repeat: true
-                    onTriggered: parent.text = Qt.formatDateTime(new Date(), "ddd, MMM d  hh:mm")
+                    onTriggered: parent.text = Qt.formatDateTime(new Date(), "ddd, MMM d  HH:mm:ss")
                 }
             }
         }

@@ -37,7 +37,10 @@ qt_add_qml_module(resources
         qml/SidebarItem.qml
         qml/Theme.qml
         qml/pages/OverviewPage.qml
+        qml/pages/CpuPage.qml
         qml/components/MetricCard.qml
+        qml/components/LineGraph.qml
+        qml/components/CoreBar.qml
     RESOURCES
         assets/fonts/Inter-Regular.ttf
         assets/fonts/Inter-Medium.ttf

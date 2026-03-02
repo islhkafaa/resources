@@ -18,6 +18,7 @@ class SystemMonitor : public QObject {
   Q_PROPERTY(QString cpuModel READ cpuModel NOTIFY cpuChanged)
   Q_PROPERTY(int cpuCores READ cpuCores NOTIFY cpuChanged)
   Q_PROPERTY(QList<double> perCoreUsage READ perCoreUsage NOTIFY cpuChanged)
+  Q_PROPERTY(QList<double> cpuHistory READ cpuHistory NOTIFY cpuHistoryChanged)
 
   Q_PROPERTY(double memTotal READ memTotal NOTIFY memChanged)
   Q_PROPERTY(double memUsed READ memUsed NOTIFY memChanged)
@@ -37,6 +38,7 @@ public:
   QString cpuModel() const { return m_cpuModel; }
   int cpuCores() const { return m_cpuCores; }
   QList<double> perCoreUsage() const { return m_perCoreUsage; }
+  QList<double> cpuHistory() const { return m_cpuHistory; }
 
   double memTotal() const { return m_memTotal; }
   double memUsed() const { return m_memUsed; }
@@ -51,6 +53,7 @@ public:
 
 signals:
   void cpuChanged();
+  void cpuHistoryChanged();
   void memChanged();
   void diskChanged();
   void netChanged();
@@ -69,6 +72,7 @@ private:
   QString m_cpuModel;
   int m_cpuCores = 0;
   QList<double> m_perCoreUsage;
+  QList<double> m_cpuHistory;
 
   double m_memTotal = 0.0;
   double m_memUsed = 0.0;

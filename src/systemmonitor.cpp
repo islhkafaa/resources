@@ -16,7 +16,14 @@ void SystemMonitor::poll() {
     m_cpuModel = info.modelName;
     m_cpuCores = info.coreCount;
     m_perCoreUsage = info.perCoreUsage;
+
+    m_cpuHistory.append(m_cpuUsage);
+    if (m_cpuHistory.size() > 60) {
+      m_cpuHistory.pop_front();
+    }
+
     emit cpuChanged();
+    emit cpuHistoryChanged();
   }
 
   {
